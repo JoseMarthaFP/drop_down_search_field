@@ -1,18 +1,14 @@
-import 'package:drop_down_search_field/src/suggestions/suggestions_box_controller.dart';
-import 'package:drop_down_search_field/src/suggestions/suggestions_box_decoration.dart';
-import 'package:drop_down_search_field/src/type_def.dart';
-import 'package:drop_down_search_field/src/widgets/drop_down_search_field.dart';
-import 'package:drop_down_search_field/src/multi_selection_widgets/multi_select_drop_down_box_configuration.dart';
-import 'package:drop_down_search_field/src/widgets/search_field_configuration.dart';
+import 'package:drop_down_search_field/drop_down_search_field.dart';
 import 'package:flutter/material.dart';
 
 class MultiSelectDropdownSearchFormField<T> extends FormField<List<T>> {
   final TextFieldConfiguration textFieldConfiguration;
   final void Function()? onReset;
-  final List<T> initiallySelectedItems;
-  final SuggestionMultiSelectionCallback<T> onMultiSuggestionSelected;
+  final List<SuggestionsModel> initiallySelectedItems;
+  final SuggestionMultiSelectionCallback<SuggestionsModel>
+      onMultiSuggestionSelected;
   final DropdownBoxConfiguration? dropdownBoxConfiguration;
-  final ChipBuilder<T>? chipBuilder;
+  final ChipBuilder<SuggestionsModel>? chipBuilder;
 
   MultiSelectDropdownSearchFormField({
     super.key,
@@ -39,11 +35,12 @@ class MultiSelectDropdownSearchFormField<T> extends FormField<List<T>> {
     SuggestionsBoxDecoration suggestionsBoxDecoration =
         const SuggestionsBoxDecoration(),
     SuggestionsBoxController? suggestionsBoxController,
-    required ItemBuilder<T> itemBuilder,
+    required ItemBuilder<SuggestionsModel> itemBuilder,
     IndexedWidgetBuilder? itemSeparatorBuilder,
     LayoutArchitecture? layoutArchitecture,
-    SuggestionsCallback<T>? suggestionsCallback,
-    PaginatedSuggestionsCallback<T>? paginatedSuggestionsCallback,
+    SuggestionsCallback<SuggestionsModel>? suggestionsCallback,
+    PaginatedSuggestionsCallback<SuggestionsModel>?
+        paginatedSuggestionsCallback,
     double suggestionsBoxVerticalOffset = 5.0,
     this.textFieldConfiguration = const TextFieldConfiguration(),
     AnimationTransitionBuilder? transitionBuilder,
@@ -208,12 +205,12 @@ class MultiSelectDropdownSearchFormFieldState<T>
     }
   }
 
-  void _handleSelection(T suggestion) {
+  void _handleSelection(SuggestionsModel suggestion) {
     setState(() {
       if (value!.contains(suggestion)) {
         value!.remove(suggestion);
       } else {
-        value!.add(suggestion);
+        value!.add(suggestion.data);
       }
     });
     didChange(value);

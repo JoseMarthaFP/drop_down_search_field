@@ -1,5 +1,6 @@
 import 'package:drop_down_search_field/src/suggestions/suggestions_box_controller.dart';
 import 'package:drop_down_search_field/src/suggestions/suggestions_box_decoration.dart';
+import 'package:drop_down_search_field/src/suggestions/suggestions_model.dart';
 import 'package:drop_down_search_field/src/type_def.dart';
 import 'package:drop_down_search_field/src/widgets/drop_down_search_field.dart';
 import 'package:drop_down_search_field/src/widgets/search_field_configuration.dart';
@@ -43,12 +44,13 @@ class DropDownSearchFormField<T> extends FormField<String> {
     SuggestionsBoxDecoration suggestionsBoxDecoration =
         const SuggestionsBoxDecoration(),
     SuggestionsBoxController? suggestionsBoxController,
-    required SuggestionSelectionCallback<T> onSuggestionSelected,
-    required ItemBuilder<T> itemBuilder,
+    required SuggestionSelectionCallback<SuggestionsModel> onSuggestionSelected,
+    required ItemBuilder<SuggestionsModel> itemBuilder,
     IndexedWidgetBuilder? itemSeparatorBuilder,
     LayoutArchitecture? layoutArchitecture,
-    SuggestionsCallback<T>? suggestionsCallback,
-    PaginatedSuggestionsCallback<T>? paginatedSuggestionsCallback,
+    SuggestionsCallback<SuggestionsModel>? suggestionsCallback,
+    PaginatedSuggestionsCallback<SuggestionsModel>?
+        paginatedSuggestionsCallback,
     double suggestionsBoxVerticalOffset = 5.0,
     this.textFieldConfiguration = const TextFieldConfiguration(),
     AnimationTransitionBuilder? transitionBuilder,

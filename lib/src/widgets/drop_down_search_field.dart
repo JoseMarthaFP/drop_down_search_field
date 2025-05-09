@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'package:drop_down_search_field/drop_down_search_field.dart';
 import 'package:drop_down_search_field/src/keyboard_suggestion_selection_notifier.dart';
 import 'package:drop_down_search_field/src/should_refresh_suggestion_focus_index_notifier.dart';
 import 'package:drop_down_search_field/src/suggestions/suggestions_box.dart';
@@ -264,7 +265,7 @@ class DropDownSearchField<T> extends StatefulWidget {
   ///   return await _getSuggestions(pattern);
   /// }
   /// ```
-  final SuggestionsCallback<T>? suggestionsCallback;
+  final SuggestionsCallback<SuggestionsModel>? suggestionsCallback;
 
   /// Called with the search pattern to get the search suggestions.
   ///
@@ -282,7 +283,7 @@ class DropDownSearchField<T> extends StatefulWidget {
   ///   return await _getSuggestions(pattern, page);
   /// }
   /// ```
-  final SuggestionsCallback<T>? paginatedSuggestionsCallback;
+  final SuggestionsCallback<SuggestionsModel>? paginatedSuggestionsCallback;
 
   /// Called when a suggestion is tapped.
   ///
@@ -307,7 +308,7 @@ class DropDownSearchField<T> extends StatefulWidget {
   ///   _controller.text = suggestion['name'];
   /// }
   /// ```
-  final SuggestionSelectionCallback<T>? onSuggestionSelected;
+  final SuggestionSelectionCallback<SuggestionsModel>? onSuggestionSelected;
 
   /// Called when multiple suggestions are selected.
   ///
@@ -332,7 +333,8 @@ class DropDownSearchField<T> extends StatefulWidget {
   ///   _controller.text = suggestions.map((s) => s['name']).join(', ');
   /// }
   /// ```
-  final SuggestionMultiSelectionCallback<T>? onSuggestionMultiSelected;
+  final SuggestionMultiSelectionCallback<SuggestionsModel>?
+      onSuggestionMultiSelected;
 
   /// Called for each suggestion returned by [suggestionsCallback] to build the
   /// corresponding widget.
@@ -349,7 +351,7 @@ class DropDownSearchField<T> extends StatefulWidget {
   ///   );
   /// }
   /// ```
-  final ItemBuilder<T> itemBuilder;
+  final ItemBuilder<SuggestionsModel> itemBuilder;
   final IndexedWidgetBuilder? itemSeparatorBuilder;
 
   /// By default, we render the suggestions in a ListView, using
@@ -589,7 +591,7 @@ class DropDownSearchField<T> extends StatefulWidget {
   final bool isMultiSelectDropdown;
 
   // The selected items in the dropdown when it is a multi-select dropdown
-  final List<T>? initiallySelectedItems;
+  final List<SuggestionsModel>? initiallySelectedItems;
 
   // The configuration of the dropdown box when it is a multi-select dropdown
   final DropdownBoxConfiguration? multiSelectDropdownBoxConfiguration;
@@ -600,7 +602,7 @@ class DropDownSearchField<T> extends StatefulWidget {
   /// The builder for the chips that are displayed in the dropdown
   ///
   /// This property allows you to customize the appearance and behavior of the chips
-  final ChipBuilder<T>? chipBuilder;
+  final ChipBuilder<SuggestionsModel>? chipBuilder;
 
   /// Creates a [DropDownSearchField]
   const DropDownSearchField({
@@ -862,7 +864,7 @@ class _DropDownSearchFieldState<T> extends State<DropDownSearchField<T>>
         }
       }
 
-      final suggestionsList = SuggestionsList<T>(
+      final suggestionsList = SuggestionsList<SuggestionsModel>(
         suggestionsBox: _suggestionsBox,
         decoration: widget.suggestionsBoxDecoration,
         debounceDuration: widget.debounceDuration,
@@ -880,7 +882,7 @@ class _DropDownSearchFieldState<T> extends State<DropDownSearchField<T>>
         getImmediateSuggestions: widget.getImmediateSuggestions,
         onSuggestionSelected: widget.onSuggestionSelected == null
             ? null
-            : (T selection) {
+            : (SuggestionsModel selection) {
                 if (!widget.keepSuggestionsOnSuggestionSelected) {
                   this._effectiveFocusNode!.unfocus();
                   this._suggestionsBox!.close();

@@ -10,14 +10,15 @@ import 'package:pointer_interceptor/pointer_interceptor.dart';
 /// Renders all the suggestions using a ListView as default.  If
 /// `layoutArchitecture` is specified, uses that instead.
 
-class SuggestionsList<T> extends StatefulWidget {
+class SuggestionsList<SuggestionsModel> extends StatefulWidget {
   final SuggestionsBox? suggestionsBox;
   final TextEditingController? controller;
   final bool getImmediateSuggestions;
-  final SuggestionSelectionCallback<T>? onSuggestionSelected;
-  final SuggestionMultiSelectionCallback<T>? onSuggestionMultiSelected;
-  final SuggestionsCallback<T>? suggestionsCallback;
-  final ItemBuilder<T>? itemBuilder;
+  final SuggestionSelectionCallback<SuggestionsModel>? onSuggestionSelected;
+  final SuggestionMultiSelectionCallback<SuggestionsModel>?
+      onSuggestionMultiSelected;
+  final SuggestionsCallback<SuggestionsModel>? suggestionsCallback;
+  final ItemBuilder<SuggestionsModel>? itemBuilder;
   final IndexedWidgetBuilder? itemSeparatorBuilder;
   final LayoutArchitecture? layoutArchitecture;
   final ScrollController? scrollController;
@@ -44,9 +45,10 @@ class SuggestionsList<T> extends StatefulWidget {
   final KeyEventResult Function(FocusNode _, KeyEvent event) onKeyEvent;
   final bool hideKeyboardOnDrag;
   final bool displayAllSuggestionWhenTap;
-  final PaginatedSuggestionsCallback<T>? paginatedSuggestionsCallback;
+  final PaginatedSuggestionsCallback<SuggestionsModel>?
+      paginatedSuggestionsCallback;
   final bool isMultiSelectDropdown;
-  final List<T>? initiallySelectedItems;
+  final List<SuggestionsModel>? initiallySelectedItems;
   final SuggestionsBoxController? suggestionsBoxController;
   final Widget? textFieldWidget;
 
@@ -93,12 +95,14 @@ class SuggestionsList<T> extends StatefulWidget {
 
   @override
   // ignore: library_private_types_in_public_api
-  _SuggestionsListState<T> createState() => _SuggestionsListState<T>();
+  _SuggestionsListState<SuggestionsModel> createState() =>
+      _SuggestionsListState<SuggestionsModel>();
 }
 
-class _SuggestionsListState<T> extends State<SuggestionsList<T>>
+class _SuggestionsListState<SuggestionsModel>
+    extends State<SuggestionsList<SuggestionsModel>>
     with SingleTickerProviderStateMixin {
-  Iterable<T>? _suggestions;
+  Iterable<SuggestionsModel>? _suggestions;
   late bool _suggestionsValid;
   late VoidCallback _controllerListener;
   Timer? _debounceTimer;
@@ -151,7 +155,7 @@ class _SuggestionsListState<T> extends State<SuggestionsList<T>>
   }
 
   @override
-  void didUpdateWidget(SuggestionsList<T> oldWidget) {
+  void didUpdateWidget(SuggestionsList<SuggestionsModel> oldWidget) {
     super.didUpdateWidget(oldWidget);
     widget.controller!.addListener(this._controllerListener);
     _getSuggestions(widget.controller!.text);
@@ -256,7 +260,7 @@ class _SuggestionsListState<T> extends State<SuggestionsList<T>>
         this._error = null;
       });
 
-      Iterable<T>? suggestions;
+      Iterable<SuggestionsModel>? suggestions;
       Object? error;
 
       try {

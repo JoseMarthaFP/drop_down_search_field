@@ -6,7 +6,7 @@ class MultiSelectDropdownDisplayWidget<T> extends StatefulWidget {
   /// The builder for the chips that are displayed in the dropdown
   ///
   /// This property allows you to customize the appearance and behavior of the chips
-  final ChipBuilder<T>? chipBuilder;
+  final ChipBuilder<SuggestionsModel>? chipBuilder;
 
   /// The configuration of the [TextField](https://docs.flutter.io/flutter/material/TextField-class.html)
   /// that the DropDownSearchField widget displays
@@ -15,7 +15,7 @@ class MultiSelectDropdownDisplayWidget<T> extends StatefulWidget {
   /// The selected items in the dropdown when it is a multi-select dropdown
   ///
   /// This property is used to display the selected items in the dropdown
-  final List<T> initiallySelectedItems;
+  final List<SuggestionsModel> initiallySelectedItems;
 
   /// The focus node for the text field
   ///
