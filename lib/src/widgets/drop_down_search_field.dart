@@ -876,7 +876,8 @@ class _DropDownSearchFieldState<T> extends State<DropDownSearchField<T>>
         onSuggestionSelected: widget.onSuggestionSelected == null
             ? null
             : (SuggestionsModel selection) {
-                if (!widget.keepSuggestionsOnSuggestionSelected) {
+                if (selection.willCloseSuggestionBox &&
+                    !widget.keepSuggestionsOnSuggestionSelected) {
                   this._effectiveFocusNode!.unfocus();
                   this._suggestionsBox!.close();
                 }
